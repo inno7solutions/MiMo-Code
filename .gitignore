@@ -32,7 +32,10 @@ tsconfig.tsbuildinfo
 .dev-home/
 
 # Local agent harness state
-.claude/
+.claude/*
+# Keep the shared project hook config tracked; ignore local overrides.
+!.claude/settings.json
+.claude/settings.local.json
 *.pid
 .mimo-worktrees
 .mimocode/

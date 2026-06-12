@@ -55,6 +55,11 @@ export const Flag = {
   MIMOCODE_ENABLE_EXPERIMENTAL_MODELS: truthy("MIMOCODE_ENABLE_EXPERIMENTAL_MODELS"),
   MIMOCODE_DISABLE_AUTOCOMPACT: truthy("MIMOCODE_DISABLE_AUTOCOMPACT"),
   MIMOCODE_DISABLE_MODELS_FETCH: truthy("MIMOCODE_DISABLE_MODELS_FETCH"),
+
+  // Defaults to false. When true, models.dev is polled on startup and hourly to
+  // refresh model metadata. Off by default so a normal launch makes no network
+  // call — the registry is served from the bundled snapshot / on-disk cache.
+  MIMOCODE_ENABLE_MODELS_FETCH: truthy("MIMOCODE_ENABLE_MODELS_FETCH"),
   MIMOCODE_DISABLE_MOUSE: truthy("MIMOCODE_DISABLE_MOUSE"),
   MIMOCODE_OUTPUT_LENGTH_CONTINUATION_LIMIT: number("MIMOCODE_OUTPUT_LENGTH_CONTINUATION_LIMIT") ?? 3,
   MIMOCODE_INVALID_OUTPUT_CONTINUATION_LIMIT: number("MIMOCODE_INVALID_OUTPUT_CONTINUATION_LIMIT") ?? 2,

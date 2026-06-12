@@ -22,6 +22,21 @@ If you need true isolation, run OpenCode inside a Docker container or VM.
 
 Server mode is opt-in only. When enabled, set `OPENCODE_SERVER_PASSWORD` to require HTTP Basic Auth. Without this, the server runs unauthenticated (with a warning). It is the end user's responsibility to secure the server - any functionality it provides is not a vulnerability.
 
+### Pinned downloads
+
+Language servers that are built from source (currently `vscode-eslint` and
+`elixir-ls`) are downloaded from GitHub pinned to a specific commit SHA rather
+than a moving branch. A git commit SHA is content-addressed, so the pin doubles
+as an integrity check: the archive contents for a given SHA cannot change.
+
+To bump a pinned language server to a newer upstream commit:
+
+1. Resolve the new commit SHA, e.g. `git ls-remote https://github.com/microsoft/vscode-eslint main`.
+2. Update the `ref` constant in `packages/opencode/src/lsp/server.ts` for that
+   language server (the download URL, the extracted `<repo>-<sha>` directory,
+   and — for elixir-ls — the resolved binary path all derive from it).
+3. Prefer a tagged release commit, and review the upstream diff before bumping.
+
 ### Out of Scope
 
 | Category                        | Rationale                                                               |

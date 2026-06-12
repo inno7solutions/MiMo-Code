@@ -29,7 +29,10 @@ leave your machine.
 | **Update check** | — | — | **Disabled** | n/a (auto-update removed) |
 | **Manual upgrade** | Only when you run `mimocode upgrade` | `mimo.xiaomi.com/install` or your package manager | Off until you run it | Don't run the command |
 | **OpenTelemetry export** | Per request, if configured | Your OTLP endpoint | **Off** | Set `OTEL_EXPORTER_OTLP_ENDPOINT` to enable |
-| **Web/search tools** | When the agent uses them | The fetched URL / Exa | On demand | Don't enable / use those tools |
+| **Web/search tools** | When the agent uses them | The fetched URL / Exa (`mcp.exa.ai`) | On demand, permission-prompted | Websearch needs `MIMOCODE_ENABLE_EXA=true` (or the MiMo/opencode provider); webfetch fetches only URLs the agent is asked to read |
+| **Voice dictation** | Only while you actively dictate | MiMo ASR (`api.xiaomimimo.com`) | Off (requires MiMo opt-in + login) | Don't use voice input; it is unavailable without `MIMOCODE_ENABLE_MIMO` |
+| **Session sharing** | Only when you share a session | `opncd.ai` or your `enterprise.url` | Off | Don't share; auto-share requires `MIMOCODE_AUTO_SHARE`/`share: "auto"` |
+| **Desktop app updates** | Only when you click "Check for updates" | GitHub releases | Off (manual) | Don't click; disabled entirely in dev builds |
 
 ### Model registry (`models.dev`)
 

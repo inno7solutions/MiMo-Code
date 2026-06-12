@@ -45,10 +45,6 @@ export const Flag = {
   MIMOCODE_CONFIG_CONTENT: process.env["MIMOCODE_CONFIG_CONTENT"],
 
   MIMOCODE_DISABLE_AUTOUPDATE: truthy("MIMOCODE_DISABLE_AUTOUPDATE"),
-
-  // Defaults to true (analytics enabled). Set MIMOCODE_ENABLE_ANALYSIS=false
-  // to opt out of POSTing model_call/tool_call/agent_request metrics.
-  MIMOCODE_ENABLE_ANALYSIS: !falsy("MIMOCODE_ENABLE_ANALYSIS"),
   MIMOCODE_ALWAYS_NOTIFY_UPDATE: truthy("MIMOCODE_ALWAYS_NOTIFY_UPDATE"),
   MIMOCODE_DISABLE_PRUNE: truthy("MIMOCODE_DISABLE_PRUNE"),
   MIMOCODE_DISABLE_TERMINAL_TITLE: truthy("MIMOCODE_DISABLE_TERMINAL_TITLE"),
@@ -59,6 +55,11 @@ export const Flag = {
   MIMOCODE_ENABLE_EXPERIMENTAL_MODELS: truthy("MIMOCODE_ENABLE_EXPERIMENTAL_MODELS"),
   MIMOCODE_DISABLE_AUTOCOMPACT: truthy("MIMOCODE_DISABLE_AUTOCOMPACT"),
   MIMOCODE_DISABLE_MODELS_FETCH: truthy("MIMOCODE_DISABLE_MODELS_FETCH"),
+
+  // Defaults to false. When true, models.dev is polled on startup and hourly to
+  // refresh model metadata. Off by default so a normal launch makes no network
+  // call — the registry is served from the bundled snapshot / on-disk cache.
+  MIMOCODE_ENABLE_MODELS_FETCH: truthy("MIMOCODE_ENABLE_MODELS_FETCH"),
   MIMOCODE_DISABLE_MOUSE: truthy("MIMOCODE_DISABLE_MOUSE"),
   MIMOCODE_OUTPUT_LENGTH_CONTINUATION_LIMIT: number("MIMOCODE_OUTPUT_LENGTH_CONTINUATION_LIMIT") ?? 3,
   MIMOCODE_INVALID_OUTPUT_CONTINUATION_LIMIT: number("MIMOCODE_INVALID_OUTPUT_CONTINUATION_LIMIT") ?? 2,
@@ -70,6 +71,12 @@ export const Flag = {
   MIMOCODE_MAX_PROMPT_IMAGES: number("MIMOCODE_MAX_PROMPT_IMAGES"),
   MIMOCODE_MAX_PROMPT_IMAGE_SIZE: number("MIMOCODE_MAX_PROMPT_IMAGE_SIZE"),
   MIMOCODE_MIMO_ONLY,
+
+  // Defaults to false: the built-in MiMo (Xiaomi) account provider and its
+  // platform.xiaomimimo.com OAuth login are not registered, keeping a default
+  // install Xiaomi-free. Set MIMOCODE_ENABLE_MIMO=true (implied by
+  // MIMOCODE_MIMO_ONLY) to enable logging in to and using MiMo.
+  MIMOCODE_ENABLE_MIMO: MIMOCODE_MIMO_ONLY || truthy("MIMOCODE_ENABLE_MIMO"),
   MIMOCODE_DISABLE_PROVIDER_ENV: MIMOCODE_MIMO_ONLY || truthy("MIMOCODE_DISABLE_PROVIDER_ENV"),
   MIMOCODE_DISABLE_CLAUDE_CODE,
   get MIMOCODE_DISABLE_CLAUDE_CODE_MCP() {

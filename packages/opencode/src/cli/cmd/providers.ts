@@ -10,7 +10,7 @@ import os from "os"
 import { Config } from "../../config"
 import { Global } from "../../global"
 import { Plugin } from "../../plugin"
-import { MimoFree } from "../../plugin/mimo-free"
+import { Flag } from "../../flag/flag"
 import { t } from "../i18n"
 import { Instance } from "../../project/instance"
 import type { Hooks } from "@mimo-ai/plugin"
@@ -213,30 +213,6 @@ export function resolvePluginProviders(input: {
   }
 
   return result
-}
-
-async function mimoFreeLogin() {
-  const spinner = prompts.spinner()
-  spinner.start(t("cli.providers.mimo_free.verifying"))
-  try {
-    const { fingerprint, exp } = await MimoFree.verify()
-    spinner.stop(t("cli.providers.mimo_free.ready"))
-    const expDate = new Date(exp).toISOString()
-    prompts.log.success(t("cli.providers.mimo_free.default_set"))
-    prompts.log.info(
-      [
-        `Endpoint:    ${MimoFree.chatBaseUrl}/chat`,
-        `Fingerprint: ${fingerprint.slice(0, 12)}…${fingerprint.slice(-4)}`,
-        `Token exp:   ${expDate}`,
-      ].join("\n"),
-    )
-    prompts.log.info(t("cli.providers.mimo_free.usage_hint"))
-    prompts.outro("Done")
-  } catch (err) {
-    spinner.stop(t("cli.providers.mimo_free.failed"), 1)
-    prompts.log.error(err instanceof Error ? err.message : String(err))
-    prompts.outro("Done")
-  }
 }
 
 async function mimoLogin() {
@@ -520,9 +496,6 @@ export const ProvidersLoginCommand = cmd({
         if (args.provider === "xiaomi") {
           await mimoLogin()
           return
-        } else if (args.provider === "mimo" || args.provider === "mimo-free") {
-          await mimoFreeLogin()
-          return
         } else if (args.provider) {
           const input = args.provider
           const byID = options.find((x) => x.value === input)
@@ -537,8 +510,9 @@ export const ProvidersLoginCommand = cmd({
           const choice = await prompts.select({
             message: t("cli.providers.select"),
             options: [
-              { label: "MiMo", value: "xiaomi", hint: t("cli.providers.mimo.recommended_hint") },
-              { label: "MiMo Auto (free)", value: "mimo-free", hint: t("cli.providers.mimo_free.hint") },
+              ...(Flag.MIMOCODE_ENABLE_MIMO
+                ? [{ label: "MiMo", value: "xiaomi", hint: t("cli.providers.mimo.recommended_hint") }]
+                : []),
               { label: t("cli.providers.other"), value: "__other__" },
             ],
           })
@@ -546,11 +520,6 @@ export const ProvidersLoginCommand = cmd({
 
           if (choice === "xiaomi") {
             await mimoLogin()
-            return
-          }
-
-          if (choice === "mimo-free") {
-            await mimoFreeLogin()
             return
           }
 

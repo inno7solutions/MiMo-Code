@@ -169,7 +169,14 @@ export async function refresh(force = false) {
   })
 }
 
-if (!Flag.MIMOCODE_DISABLE_MODELS_FETCH && !process.argv.includes("--get-yargs-completions")) {
+// The proactive startup refresh + hourly poll against models.dev is opt-in.
+// By default the registry is served from the build-time bundled snapshot
+// (or the on-disk cache), so a normal launch makes no network call. Set
+// MIMOCODE_ENABLE_MODELS_FETCH=true to keep the model metadata refreshed in
+// the background, or point MIMOCODE_MODELS_PATH/MIMOCODE_MODELS_URL at a local
+// or self-hosted registry. `Data()` still performs a single on-demand fetch
+// only if neither a snapshot nor a cache exists (unless MIMOCODE_DISABLE_MODELS_FETCH).
+if (Flag.MIMOCODE_ENABLE_MODELS_FETCH && !process.argv.includes("--get-yargs-completions")) {
   void refresh()
   setInterval(
     async () => {

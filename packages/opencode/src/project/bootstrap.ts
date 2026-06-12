@@ -13,7 +13,6 @@ import { FileWatcher } from "@/file/watcher"
 import { ShareNext } from "@/share"
 import * as Effect from "effect/Effect"
 import { Config } from "@/config"
-import { Metrics } from "@/metrics"
 import { Memory } from "@/memory"
 import { WriterService, BackfillService } from "@/history"
 
@@ -54,6 +53,4 @@ export const InstanceBootstrap = Effect.gen(function* () {
       }
     }),
   )
-
-  yield* Metrics.subscribe()
 }).pipe(Effect.withSpan("InstanceBootstrap"))

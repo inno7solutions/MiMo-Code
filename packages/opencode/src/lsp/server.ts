@@ -162,7 +162,12 @@ export const ESLint: Info = {
     if (!(await Filesystem.exists(serverPath))) {
       if (Flag.MIMOCODE_DISABLE_LSP_DOWNLOAD) return
       log.info("downloading and building VS Code ESLint server")
-      const response = await fetch("https://github.com/microsoft/vscode-eslint/archive/refs/heads/main.zip")
+      // Pinned to a specific upstream commit instead of tracking
+      // refs/heads/main: a git commit SHA is content-addressed, so it doubles
+      // as an integrity check and prevents a moving branch (or a compromised
+      // HEAD) from silently changing what gets downloaded and built.
+      const ref = "57e23091eeb644246cb4195c49b4b2d7c9909d01"
+      const response = await fetch(`https://github.com/microsoft/vscode-eslint/archive/${ref}.zip`)
       if (!response.ok) return
 
       const zipPath = path.join(Global.Path.bin, "vscode-eslint.zip")
@@ -177,7 +182,7 @@ export const ESLint: Info = {
       if (!ok) return
       await fs.rm(zipPath, { force: true })
 
-      const extractedPath = path.join(Global.Path.bin, "vscode-eslint-main")
+      const extractedPath = path.join(Global.Path.bin, `vscode-eslint-${ref}`)
       const finalPath = path.join(Global.Path.bin, "vscode-eslint")
 
       const stats = await fs.stat(finalPath).catch(() => undefined)
@@ -532,10 +537,15 @@ export const ElixirLS: Info = {
   async spawn(root) {
     let binary = which("elixir-ls")
     if (!binary) {
+      // Pinned to a specific upstream commit instead of tracking
+      // refs/heads/master: a git commit SHA is content-addressed, so it
+      // doubles as an integrity check and prevents a moving branch (or a
+      // compromised HEAD) from silently changing what gets downloaded/built.
+      const ref = "256ec7787dc14fa666817199ec6aa5dc64787e37"
       const elixirLsPath = path.join(Global.Path.bin, "elixir-ls")
       binary = path.join(
         Global.Path.bin,
-        "elixir-ls-master",
+        `elixir-ls-${ref}`,
         "release",
         process.platform === "win32" ? "language_server.bat" : "language_server.sh",
       )
@@ -550,7 +560,7 @@ export const ElixirLS: Info = {
         if (Flag.MIMOCODE_DISABLE_LSP_DOWNLOAD) return
         log.info("downloading elixir-ls from GitHub releases")
 
-        const response = await fetch("https://github.com/elixir-lsp/elixir-ls/archive/refs/heads/master.zip")
+        const response = await fetch(`https://github.com/elixir-lsp/elixir-ls/archive/${ref}.zip`)
         if (!response.ok) return
         const zipPath = path.join(Global.Path.bin, "elixir-ls.zip")
         if (response.body) await Filesystem.writeStream(zipPath, response.body)
@@ -568,7 +578,7 @@ export const ElixirLS: Info = {
           recursive: true,
         })
 
-        const cwd = path.join(Global.Path.bin, "elixir-ls-master")
+        const cwd = path.join(Global.Path.bin, `elixir-ls-${ref}`)
         const env = { MIX_ENV: "prod", ...process.env }
         await Process.run(["mix", "deps.get"], { cwd, env })
         await Process.run(["mix", "compile"], { cwd, env })

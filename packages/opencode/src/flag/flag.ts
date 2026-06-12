@@ -71,6 +71,12 @@ export const Flag = {
   MIMOCODE_MAX_PROMPT_IMAGES: number("MIMOCODE_MAX_PROMPT_IMAGES"),
   MIMOCODE_MAX_PROMPT_IMAGE_SIZE: number("MIMOCODE_MAX_PROMPT_IMAGE_SIZE"),
   MIMOCODE_MIMO_ONLY,
+
+  // Defaults to false: the built-in MiMo (Xiaomi) account provider and its
+  // platform.xiaomimimo.com OAuth login are not registered, keeping a default
+  // install Xiaomi-free. Set MIMOCODE_ENABLE_MIMO=true (implied by
+  // MIMOCODE_MIMO_ONLY) to enable logging in to and using MiMo.
+  MIMOCODE_ENABLE_MIMO: MIMOCODE_MIMO_ONLY || truthy("MIMOCODE_ENABLE_MIMO"),
   MIMOCODE_DISABLE_PROVIDER_ENV: MIMOCODE_MIMO_ONLY || truthy("MIMOCODE_DISABLE_PROVIDER_ENV"),
   MIMOCODE_DISABLE_CLAUDE_CODE,
   get MIMOCODE_DISABLE_CLAUDE_CODE_MCP() {

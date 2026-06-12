@@ -10,6 +10,7 @@ import os from "os"
 import { Config } from "../../config"
 import { Global } from "../../global"
 import { Plugin } from "../../plugin"
+import { Flag } from "../../flag/flag"
 import { t } from "../i18n"
 import { Instance } from "../../project/instance"
 import type { Hooks } from "@mimo-ai/plugin"
@@ -509,7 +510,9 @@ export const ProvidersLoginCommand = cmd({
           const choice = await prompts.select({
             message: t("cli.providers.select"),
             options: [
-              { label: "MiMo", value: "xiaomi", hint: t("cli.providers.mimo.recommended_hint") },
+              ...(Flag.MIMOCODE_ENABLE_MIMO
+                ? [{ label: "MiMo", value: "xiaomi", hint: t("cli.providers.mimo.recommended_hint") }]
+                : []),
               { label: t("cli.providers.other"), value: "__other__" },
             ],
           })

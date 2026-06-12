@@ -23,7 +23,7 @@ leave your machine.
 | What | When | Destination | Default | Off switch |
 | --- | --- | --- | --- | --- |
 | **LLM requests** | When you send a message | The provider you configured (Anthropic, OpenAI, MiMo, …) | On (inherent) | Choose your provider / model |
-| **MiMo account login** | Only when you run the MiMo login flow | `platform.xiaomimimo.com` | Off until you log in | Don't log in to MiMo |
+| **MiMo account login** | Only when you run the MiMo login flow | `platform.xiaomimimo.com` | **Off** (provider not registered) | Opt in with `MIMOCODE_ENABLE_MIMO=true` |
 | **Model registry refresh** | Startup + hourly poll | `models.dev` | **Off** | Opt in with `MIMOCODE_ENABLE_MODELS_FETCH=true` |
 | **Language server downloads** | First use of a language that needs an LSP | GitHub / Eclipse / JetBrains | On (on demand) | `MIMOCODE_DISABLE_LSP_DOWNLOAD=true` |
 | **Update check** | — | — | **Disabled** | n/a (auto-update removed) |

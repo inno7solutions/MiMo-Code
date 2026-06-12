@@ -121,7 +121,7 @@ export class Service extends Context.Service<Service, Interface>()("@opencode/Pl
 
 // Built-in plugins that are directly imported (not installed from npm)
 const INTERNAL_PLUGINS: PluginInstance[] = [
-  MimoAuthPlugin,
+  ...(Flag.MIMOCODE_ENABLE_MIMO ? [MimoAuthPlugin] : []),
   AnthropicProxyPlugin,
   CodexAuthPlugin,
   CopilotAuthPlugin,

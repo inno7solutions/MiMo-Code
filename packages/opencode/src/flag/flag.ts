@@ -46,9 +46,11 @@ export const Flag = {
 
   MIMOCODE_DISABLE_AUTOUPDATE: truthy("MIMOCODE_DISABLE_AUTOUPDATE"),
 
-  // Defaults to true (analytics enabled). Set MIMOCODE_ENABLE_ANALYSIS=false
-  // to opt out of POSTing model_call/tool_call/agent_request metrics.
-  MIMOCODE_ENABLE_ANALYSIS: !falsy("MIMOCODE_ENABLE_ANALYSIS"),
+  // Defaults to false (analytics disabled). Set MIMOCODE_ENABLE_ANALYSIS=true
+  // to opt in to POSTing model_call/tool_call/agent_request metrics. Payloads
+  // contain only counts/metadata (token counts, byte sizes, tool names, model
+  // ids) — never prompt or file content.
+  MIMOCODE_ENABLE_ANALYSIS: truthy("MIMOCODE_ENABLE_ANALYSIS"),
   MIMOCODE_ALWAYS_NOTIFY_UPDATE: truthy("MIMOCODE_ALWAYS_NOTIFY_UPDATE"),
   MIMOCODE_DISABLE_PRUNE: truthy("MIMOCODE_DISABLE_PRUNE"),
   MIMOCODE_DISABLE_TERMINAL_TITLE: truthy("MIMOCODE_DISABLE_TERMINAL_TITLE"),
